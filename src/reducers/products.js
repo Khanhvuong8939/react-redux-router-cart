@@ -9,7 +9,7 @@ var initialState = [
         id: 2,
         name: 'apple',
         price: 300,
-        status: false
+        status: true
     },
     {
         id: 3,
