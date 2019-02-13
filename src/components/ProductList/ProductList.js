@@ -19,9 +19,9 @@ class ProductList extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <ProductItem/>
-                            <ProductItem/>
-                            <ProductItem/>
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
                         </tbody>
                     </table>
                 </div>
