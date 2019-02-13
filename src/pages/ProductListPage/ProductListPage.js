@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import ProductList from '../../components/ProductList/ProductList';
 import ProductItem from '../../components/ProductItem/ProductItem';
+import { connect } from 'react-redux';
 
 class HomePage extends Component {
     render() {
-        var productList = [{
-            id: 1,
-            name: 'apple',
-            price: 300,
-            status: false
-        }];
+        var productList = this.props.products;
         return (
             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <button type="button" className="btn btn-success mb-10">Add Product</button>
@@ -25,7 +21,7 @@ class HomePage extends Component {
         if (productList.length > 0) {
             result = productList.map((product, index) => {
                 return (
-                    <ProductItem 
+                    <ProductItem
                         key={product.id}
                         index={index}
                         product={product}
@@ -37,5 +33,10 @@ class HomePage extends Component {
     }
 }
 
+var mapStateToProps = state => {
+    return {
+        products: state.products
+    }
+}
 
-export default HomePage;
+export default connect(mapStateToProps, null)(HomePage);
