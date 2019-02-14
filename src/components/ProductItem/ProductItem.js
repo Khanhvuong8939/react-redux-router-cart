@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class ProductItem extends Component {
     render() {
-        var {product, index} = this.props;
+        var { product, index } = this.props;
         var statusName = product.status ? 'avalailable' : 'not-available'
-        var statusClass = product.status  ? 'success' : 'warning'
+        var statusClass = product.status ? 'success' : 'warning'
         return (
             <tr>
                 <td>{index + 1}</td>
@@ -15,11 +16,14 @@ class ProductItem extends Component {
                     <span className={`label label-${statusClass}`}>{statusName}</span>
                 </td>
                 <td>
-                    <button type="button" className="btn btn-warning mr-10">Edit</button>
-                    <button type="button" className="btn btn-danger">Delete</button>
+                    <Link to={`product/${product.id}/edit`} className="btn btn-warning mr-10">Edit</Link>
+                    <button type="button" className="btn btn-danger" onClick={() => this.deleteItem(product.id)}>Delete</button>
                 </td>
             </tr>
         );
+    }
+    deleteItem = id => {
+        this.props.deleteItem(id);
     }
 }
 

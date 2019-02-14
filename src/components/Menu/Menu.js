@@ -40,7 +40,7 @@ class Menu extends Component {
   render() {
     return (
       <nav className="navbar navbar-default">
-        <a className="navbar-brand">SHOPPING</a>
+        <a className="navbar-brand">SHOPPING</a> {/*eslint-disable-line */}
         <ul className="nav navbar-nav">
           {this.showMenus(menus)}
         </ul>
