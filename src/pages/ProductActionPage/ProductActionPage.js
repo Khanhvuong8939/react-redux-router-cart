@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import callApi from './../../utils/apiCaller';
 
+import { connect } from 'react-redux';
+import { actAddProductRequest } from './../../actions/index';
+
 class ProductActionPage extends Component {
     constructor(props) {
         super(props)
@@ -35,19 +38,20 @@ class ProductActionPage extends Component {
         var value = target.type === 'checkbox' ? target.checked : target.value;
         this.setState({ [name]: value })
     }
-    0
+
     onSubmit = e => {
         e.preventDefault();
         var { id, txtName, txtPrice, chkbStatus } = this.state;
         var { history } = this.props;
+        var product = {
+            id,
+            name: txtName,
+            price: txtPrice, 
+            status: chkbStatus
+        }
         if (id === '') {
-            callApi('POST', 'products', {
-                name: txtName,
-                price: txtPrice,
-                status: chkbStatus
-            }).then(res => {
-                history.goBack();
-            }).catch(err => console.log(err))
+            this.props.onAddProduct(product);
+            history.goBack();
         } else {
             callApi('PUT', `products/${id}`, {
                 name: txtName,
@@ -57,8 +61,6 @@ class ProductActionPage extends Component {
                 history.goBack();
             }).catch(err => console.log(err));
         }
-
-
     }
 
     render() {
@@ -95,5 +97,12 @@ class ProductActionPage extends Component {
     }
 }
 
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onAddProduct: product => {
+            dispatch(actAddProductRequest(product))
+        }
+    }
+}
 
-export default ProductActionPage;
+export default connect(null, mapDispatchToProps)(ProductActionPage);
