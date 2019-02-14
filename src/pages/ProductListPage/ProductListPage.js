@@ -2,23 +2,13 @@ import React, { Component } from 'react';
 import ProductList from '../../components/ProductList/ProductList';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import { connect } from 'react-redux';
-import callApi from './../../utils/apiCaller';
 import { Link } from 'react-router-dom'
-import { findIndexById } from './../../utils/utils';
 import * as Actions from './../../actions/index';
 
 class ProductListPage extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            products: []
-        }
-    }
 
     componentDidMount() {
         this.props.fetchProductRequest()
-
     }
 
     render() {
@@ -51,15 +41,7 @@ class ProductListPage extends Component {
     }
 
     deleteItem = id => {
-        callApi('DELETE', `products/${id}`, null)
-            .then(res => { console.log('delete success') })
-            .catch(err => console.log(err));
-        let { products } = this.state;
-        let index = findIndexById(products, id);
-        if (index !== -1) {
-            products.splice(index, 1)
-            this.setState({ products })
-        }
+        this.props.deleteProductRequest(id)
     }
 }
 
@@ -72,6 +54,7 @@ var mapStateToProps = state => {
 var mapDispatchToProps = (dispatch, props) => {
     return {
         fetchProductRequest: () => { dispatch(Actions.actFecthProductsRequest()) },
+        deleteProductRequest: id => { dispatch(Actions.actDeleteProductRequest(id)) },
     }
 }
 

@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/product/add',
     exact: false,
-    main: ({ history }) => <ProductActionPage history={history} />
+    main: ({ match, history }) => <ProductActionPage match={match} history={history} />
   },
   {
     path: '/product/:id/edit',

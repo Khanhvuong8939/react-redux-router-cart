@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import callApi from './../../utils/apiCaller';
+
 class ProductActionPage extends Component {
     constructor(props) {
         super(props)
@@ -13,9 +14,8 @@ class ProductActionPage extends Component {
     }
 
     componentDidMount() {
-        var match = this.props.match;
-        let { id } = match.params;
-        if (id !== '') {
+        var { id } = this.props.match.params;
+        if (id) {
             callApi('GET', `products/${id}`, null)
                 .then(res => {
                     let { name, price, status } = res.data;
@@ -62,9 +62,7 @@ class ProductActionPage extends Component {
     }
 
     render() {
-        var { txtName, txtPrice, chkbStatus } = this.state;
-        var match = this.props.match;
-        let { id } = match.params.id;
+        var { id, txtName, txtPrice, chkbStatus } = this.state;
         return (
             <div>
                 <div className="panel panel-success">
