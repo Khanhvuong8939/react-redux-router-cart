@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import callApi from './../../utils/apiCaller';
-
 import { connect } from 'react-redux';
-import { actAddProductRequest } from './../../actions/index';
+import { actAddProductRequest, actEditProductItemRequest, actUpdateProductRequest } from './../../actions/index';
 
 class ProductActionPage extends Component {
     constructor(props) {
@@ -19,17 +17,18 @@ class ProductActionPage extends Component {
     componentDidMount() {
         var { id } = this.props.match.params;
         if (id) {
-            callApi('GET', `products/${id}`, null)
-                .then(res => {
-                    let { name, price, status } = res.data;
-                    this.setState({
-                        id,
-                        txtName: name,
-                        txtPrice: price,
-                        chkbStatus: status
-                    })
-                }).catch(err => console.log(err))
+            this.props.onEditProduct(id);
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        var { id, name, price, status } = nextProps.editingItem;
+        this.setState({
+            id,
+            txtName: name,
+            txtPrice: price,
+            chkbStatus: status
+        });
     }
 
     onChange = e => {
@@ -46,21 +45,15 @@ class ProductActionPage extends Component {
         var product = {
             id,
             name: txtName,
-            price: txtPrice, 
+            price: txtPrice,
             status: chkbStatus
         }
         if (id === '') {
             this.props.onAddProduct(product);
-            history.goBack();
         } else {
-            callApi('PUT', `products/${id}`, {
-                name: txtName,
-                price: txtPrice,
-                status: chkbStatus
-            }).then(res => {
-                history.goBack();
-            }).catch(err => console.log(err));
+            this.props.onUpdateProduct(product);
         }
+        history.goBack();
     }
 
     render() {
@@ -85,15 +78,18 @@ class ProductActionPage extends Component {
                                 <label className='mr-10'>available:    </label>
                                 <input type="checkbox" name='chkbStatus' checked={chkbStatus} value={chkbStatus} onChange={this.onChange} />
                             </div>
-
                             <button className="btn btn-primary">Submit</button>
                         </form>
-
                     </div>
                 </div>
-
             </div>
         );
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        editingItem: state.itemProductEdit
     }
 }
 
@@ -101,8 +97,14 @@ const mapDispatchToProps = (dispatch, props) => {
     return {
         onAddProduct: product => {
             dispatch(actAddProductRequest(product))
+        },
+        onEditProduct: id => {
+            dispatch(actEditProductItemRequest(id))
+        },
+        onUpdateProduct: product => {
+            dispatch(actUpdateProductRequest(product))
         }
     }
 }
 
-export default connect(null, mapDispatchToProps)(ProductActionPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductActionPage);

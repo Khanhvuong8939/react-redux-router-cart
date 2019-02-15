@@ -51,3 +51,38 @@ export const actAddProduct = product => {
         product
     }
 }
+
+export const actEditProductItemRequest = id => {
+    return dispatch => {
+        callApi('GET', `products/${id}`, null)
+            .then(res => {
+                dispatch(actEditProduct(res.data))
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+export const actEditProduct = product => {
+    return {
+        type: Types.EDIT_PRODUCT,
+        product
+    }
+}
+
+export const actUpdateProductRequest = product => {
+    return dispatch => {
+        callApi('PUT', `products/${product.id}`, product)
+            .then(res => {
+                dispatch(actUpdateProduct(res.data))
+            })
+            .catch(err => console.log(err))
+
+    }
+}
+
+export const actUpdateProduct = product => {
+    return {
+        type: Types.UPDATE_PRODUCT,
+        product
+    }
+}
