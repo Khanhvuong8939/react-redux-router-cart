@@ -16,7 +16,7 @@ class ProductItem extends Component {
                     <span className={`label label-${statusClass}`}>{statusName}</span>
                 </td>
                 <td>
-                    <Link to={`product/${product.id}/edit`} className="btn btn-warning mr-10">Edit</Link>
+                    <Link to={`products/${product.id}/edit`} className="btn btn-warning mr-10">Edit</Link>
                     <button type="button" className="btn btn-danger" onClick={() => this.deleteItem(product.id)}>Delete</button>
                 </td>
             </tr>
